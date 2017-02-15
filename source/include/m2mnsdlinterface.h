@@ -103,7 +103,8 @@ public:
      * @param address Bootstrap address.
      * @return true if created and sent successfully else false.
     */
-    bool create_bootstrap_resource(sn_nsdl_addr_s *address, const String &bootstrap_endpoint_name);
+    bool create_bootstrap_resource(sn_nsdl_addr_s *address,
+                                   const String &bootstrap_endpoint_name);
 
     /**
      * @brief Sends the register message to the server.
@@ -212,6 +213,12 @@ public:
      * @return endpoint name
      */
     const String& endpoint_name() const;
+
+    /**
+     * @brief Set server address
+     * @param server_address, Bootstrap or M2M server address.
+     */
+    void set_server_address(const char *server_address);
 
 protected: // from M2MTimerObserver
 
@@ -371,6 +378,12 @@ private:
     */
     void change_operation_mode(M2MObject *object, M2MBase::Operation operation);
 
+    /**
+     * @brief Parse URI query parameters and pass those to nsdl-c.
+     * @return True if parsing success otherwise False
+    */
+    bool parse_and_send_uri_query_parameters();
+
 private:
 
     M2MNsdlObserver                         &_observer;
@@ -385,6 +398,7 @@ private:
     String                                  _endpoint_name;
     uint32_t                                _counter_for_nsdl;
     uint16_t                                _bootstrap_id;
+    char                                    *_server_address; // BS or M2M address
     bool                                    _unregister_ongoing;
     bool                                    _identity_accepted;
 
